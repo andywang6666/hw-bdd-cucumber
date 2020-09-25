@@ -18,7 +18,11 @@ end
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.body is the entire content of the page as a string.
-  /#{e1}.*#{e2}/ =~ page.body
+  ind1 = /#{e1}/ =~ page.body
+  ind2 = /#{e2}/ =~ page.body
+  expect(ind1).not_to be_nil
+  expect(ind2).not_to be_nil
+  expect(ind1).to be < ind2
 end
 
 # Make it easier to express checking or unchecking several boxes at once
@@ -41,5 +45,5 @@ end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
-  Movie.count.should be 10
+  expect(Movie.count).to eq 10
 end
